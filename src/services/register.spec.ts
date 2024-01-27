@@ -24,6 +24,7 @@ describe('Register Services', () => {
 
     // Assert
     const createdUser = await usersRepository.findByEmail(email)
+
     expect(createdUser).toBeDefined()
     expect(createdUser?.email).toBe(email)
     expect(createdUser?.name).toBe(name)
