@@ -21,7 +21,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     await registerService.execute({ email, name, password })
   } catch (err) {
     if (err instanceof UserAlreadyExistError)
-      return reply.status(409).send('User with same email already exists')
+      return reply.status(409).send({ message: err.message })
 
     throw err
   }
