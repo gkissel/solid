@@ -20,7 +20,7 @@ export async function authenticate(
 
     const authenticateService = new AuthenticateService(usersRepository)
 
-    const { user } = await authenticateService.execute({ email, password })
+    await authenticateService.execute({ email, password })
   } catch (err) {
     if (err instanceof InvalidCredentialsError)
       return reply.status(409).send({ message: err.message })
