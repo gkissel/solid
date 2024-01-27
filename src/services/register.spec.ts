@@ -37,7 +37,7 @@ describe('Register Services', () => {
     })
     // Act & Assert
 
-    expect(() =>
+    await expect(() =>
       registerService.execute({
         name: 'John Doe',
         email,
