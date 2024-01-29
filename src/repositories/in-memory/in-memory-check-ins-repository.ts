@@ -4,14 +4,6 @@ import { randomUUID } from 'crypto'
 import dayjs from 'dayjs'
 
 export class InMemoryCheckInsRepository implements CheckInsRepository {
-  async findManyByUserId(userId: string, page: number) {
-    const checkIns = this.registry
-      .filter((checkIn) => checkIn.user_id === userId)
-      .slice((page - 1) * 20, page * 20)
-
-    return checkIns
-  }
-
   public registry: CheckIn[] = []
 
   async findByUserIdOnDate(userId: string, date: Date) {
@@ -45,5 +37,17 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     this.registry.push(checkIn)
 
     return checkIn
+  }
+
+  async findManyByUserId(userId: string, page: number) {
+    const checkIns = this.registry
+      .filter((checkIn) => checkIn.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
+
+    return checkIns
+  }
+
+  async countByUserId(userId: string): Promise<number> {
+    return this.registry.filter((checkIn) => checkIn.user_id === userId).length
   }
 }
