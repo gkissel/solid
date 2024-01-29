@@ -20,6 +20,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.11.6",
     "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",
     "fastify": "^4.25.2",
     "typescript": "^5.3.3",
@@ -28,8 +29,8 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.1.0",
     "@vitest/coverage-v8": "^1.2.2",
-    "eslint": "^8.56.0",
     "@vitest/ui": "^1.2.2",
+    "eslint": "^8.56.0",
     "prisma": "^5.8.1",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
