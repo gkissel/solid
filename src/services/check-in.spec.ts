@@ -18,8 +18,8 @@ describe('Check-in Service', () => {
       id: 'gym-01',
       name: 'Gym 01',
       description: 'Gym 01',
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: new Decimal(-27.6463616),
+      longitude: new Decimal(-52.2584064),
       phone: '00000000000',
     })
 
@@ -85,5 +85,25 @@ describe('Check-in Service', () => {
     })
 
     expect(checkIn).toBeDefined()
+  })
+
+  it('should not be able to check in on distant gym', async () => {
+    gymsRepository.registrys.push({
+      id: 'gym-02',
+      name: 'Gym 02',
+      description: 'Gym 02',
+      latitude: new Decimal(-27.5023552),
+      longitude: new Decimal(-52.1496985),
+      phone: '00000000000',
+    })
+    await expect(() =>
+      sut.execute({
+        gymId: 'gym-02',
+        userId: 'user-01',
+
+        userLatitude: -27.6463616,
+        userLongitude: -52.2584064,
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
