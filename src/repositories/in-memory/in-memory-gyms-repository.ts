@@ -31,4 +31,10 @@ export class InMemoryGymsRepository implements GymsRepository {
 
     return gym
   }
+
+  async searchMany(query: string, page: number) {
+    return this.registries
+      .filter((registry) => registry.name.includes(query))
+      .slice((page - 1) * 20, page * 20)
+  }
 }
