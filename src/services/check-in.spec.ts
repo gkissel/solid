@@ -3,23 +3,25 @@ import { expect, describe, it, beforeEach, vi, afterEach } from 'vitest'
 import { CheckInService } from './check-in'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { MaxNumberOfCheckInsError } from './errors/max-number-og-check-ins-error'
+import { MaxDistanceError } from './errors/max-distance-error'
 
 let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
 let sut: CheckInService
 
 describe('Check-in Service', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository()
     gymsRepository = new InMemoryGymsRepository()
     sut = new CheckInService(checkInsRepository, gymsRepository)
 
-    gymsRepository.registrys.push({
+    await gymsRepository.create({
       id: 'gym-01',
       name: 'Gym 01',
       description: 'Gym 01',
-      latitude: new Decimal(-27.6463616),
-      longitude: new Decimal(-52.2584064),
+      latitude: -27.6463616,
+      longitude: -52.2584064,
       phone: '00000000000',
     })
 
@@ -60,7 +62,7 @@ describe('Check-in Service', () => {
         userLatitude: -27.6463616,
         userLongitude: -52.2584064,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
   it('should be able to check in twice in different days', async () => {
@@ -88,7 +90,7 @@ describe('Check-in Service', () => {
   })
 
   it('should not be able to check in on distant gym', async () => {
-    gymsRepository.registrys.push({
+    gymsRepository.registries.push({
       id: 'gym-02',
       name: 'Gym 02',
       description: 'Gym 02',
@@ -104,6 +106,6 @@ describe('Check-in Service', () => {
         userLatitude: -27.6463616,
         userLongitude: -52.2584064,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })
