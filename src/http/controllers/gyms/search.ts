@@ -1,21 +1,22 @@
 import { makeSearchGymsService } from '@/services/factories/make-search-gyms-service'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-
 export async function search(request: FastifyRequest, reply: FastifyReply) {
-  const searchGymQuerySchema = z.object({
-    query: z.string(),
+  const searchGymsQuerySchema = z.object({
+    q: z.string(),
     page: z.coerce.number().min(1).default(1),
   })
 
-  const { query, page } = searchGymQuerySchema.parse(request.query)
+  const { q, page } = searchGymsQuerySchema.parse(request.query)
 
-  const searchGymsService = makeSearchGymsService()
+  const searchGymsUseCase = makeSearchGymsService()
 
-  const { gyms } = await searchGymsService.execute({
-    query,
+  const { gyms } = await searchGymsUseCase.execute({
+    query: q,
     page,
   })
 
-  return reply.status(200).send({ gyms })
+  return reply.status(200).send({
+    gyms,
+  })
 }
