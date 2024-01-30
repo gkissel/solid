@@ -18,6 +18,11 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+
       - run: pnpm install
+    
+    - name: Migrate database schemas
+      - run: pnpm exec prisma generate
+
 
       - run: pnpm run test
